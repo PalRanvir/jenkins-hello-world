@@ -11,12 +11,14 @@ pipeline {
     stage('Build') {
       steps {
         sh 'mvn clean install -DskipTests'
+        archiveArtifacts 'target/hello-demo-*.jar'
       }
     }
 
     stage('Unit Test') {
       steps {
         sh 'mvn test'
+        junit(testResults: 'target/surefire-reports/TEST-*.xml', keepProperties: true, keepTestNames: true)
       }
     }
 
