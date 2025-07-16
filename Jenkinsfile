@@ -1,38 +1,27 @@
 pipeline {
-    agent any
-
-    tools {
-        // Install the Maven version configured as "M3" and add it to the path.
-        maven "M398"
+  agent any
+  stages {
+    stage('Echo Version') {
+      steps {
+        sh 'echo Print Maven Version'
+        sh 'mvn -version'
+      }
     }
 
-    stages {
-        stage ('Echo Version') {
-            steps {
-                sh 'echo Print Maven Version'
-                sh 'mvn -version'
-            }
-        }
-
-        stage ('Build') {
-            steps {
-                sh 'mvn clean install -DskipTests'
-            }
-            post {
-                success {
-                    echo "Archiving artifacts"
-                    archiveArtifacts artifacts: '**/*.war'
-                }
-            }
-        }
-
-        stage ('Unit Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+    stage('Build') {
+      steps {
+        sh 'mvn clean install -DskipTests'
+      }
     }
 
+    stage('Unit Test') {
+      steps {
+        sh 'mvn test'
+      }
+    }
 
-        
+  }
+  tools {
+    maven 'M398'
+  }
 }
