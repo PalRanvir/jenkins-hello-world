@@ -1,13 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Echo Version') {
-      steps {
-        sh 'echo Print Maven Version'
-        sh 'mvn -version'
-      }
-    }
-
     stage('Build') {
       steps {
         sh 'mvn clean install -DskipTests'
