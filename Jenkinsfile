@@ -7,14 +7,14 @@ pipeline {
     }
 
     stages {
-        stage('Echo Version') {
-            step{
+        stage ('Echo Version') {
+            steps {
                 sh 'echo Print Maven Version'
                 sh 'mvn -version'
             }
         }
 
-        stage('Build') {
+        stage ('Build') {
             steps {
                 sh 'mvn clean install -DskipTests'
             }
@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        stage('Unit Test') {
+        stage ('Unit Test') {
             steps {
                 sh 'mvn test'
             }
