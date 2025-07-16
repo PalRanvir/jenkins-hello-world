@@ -11,17 +11,27 @@ pipeline {
     stage('Build') {
       steps {
         sh 'mvn clean install -DskipTests'
-        //archiveArtifacts 'target/hello-demo-*.jar'
+        archiveArtifacts 'target/hello-demo-*.jar'
       }
     }
 
     stage('Unit Test') {
       steps {
         sh 'mvn test'
-        //junit(testResults: 'target/surefire-reports/TEST-*.xml', keepProperties: true, keepTestNames: true)
+        junit(testResults: 'target/surefire-reports/TEST-*.xml', keepProperties: true, keepTestNames: true)
       }
     }
-
+    stage('Local Deployment') {
+      steps {
+        sh ''' java -jar target/hello-demo-*.jar ''' 
+      }
+    }
+    stage ('Integration Testing') {
+      steps {
+        sh 'sleep 5s'
+        sh 'curl -s http://localhost:6767/hello'
+      }
+    }
   }
   tools {
     maven 'M398'
